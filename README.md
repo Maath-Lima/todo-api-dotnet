@@ -11,7 +11,6 @@ Add item:
 Body (raw JSON):  
 ```json
 {
-    "id": 1,
     "name": "drink coffee",
     "isComplete": true
 }
