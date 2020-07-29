@@ -18,7 +18,7 @@ Body (raw JSON):
 ```
 
 Get all items:  
-`GET /api/TodoItems/{id}`
+`GET /api/TodoItems`
 
 Get Specific item by id:  
 `GET /api/TodoItems/{id}`
