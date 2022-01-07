@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Diego Lopes\\source\\repos\\TodoApi\\TodoApi\\TodoApi.csproj": {}
+    "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\TodoApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Diego Lopes\\source\\repos\\TodoApi\\TodoApi\\TodoApi.csproj": {
+    "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Lopes\\source\\repos\\TodoApi\\TodoApi\\TodoApi.csproj",
+        "projectUniqueName": "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "C:\\Users\\Diego Lopes\\source\\repos\\TodoApi\\TodoApi\\TodoApi.csproj",
-        "packagesPath": "C:\\Users\\Diego Lopes\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Lopes\\source\\repos\\TodoApi\\TodoApi\\obj\\",
+        "projectPath": "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\TodoApi.csproj",
+        "packagesPath": "C:\\Users\\math3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Diego Lopes\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\math3\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -37,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -75,6 +77,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.21, 3.1.21]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -83,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

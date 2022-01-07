@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TodoApi.Domain.Models;
 
-namespace TodoApi.Models
+namespace TodoApi.Data.Context
 {
-    public class TodoContext : DbContext
+    public class TodoItemContext : DbContext
     {
-        public TodoContext(DbContextOptions<TodoContext> options)
+        public TodoItemContext(DbContextOptions<TodoItemContext> options)
             : base(options)
         {
         }
