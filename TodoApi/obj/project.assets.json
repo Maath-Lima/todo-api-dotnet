@@ -2690,6 +2690,30 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "TodoApi.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "3.1.6",
+          "TodoApi.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/TodoApi.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TodoApi.Data.dll": {}
+        }
+      },
+      "TodoApi.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/TodoApi.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TodoApi.Domain.dll": {}
+        }
       }
     }
   },
@@ -8604,6 +8628,16 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
+    },
+    "TodoApi.Data/1.0.0": {
+      "type": "project",
+      "path": "../TodoApi.Data/TodoApi.Data.csproj",
+      "msbuildProject": "../TodoApi.Data/TodoApi.Data.csproj"
+    },
+    "TodoApi.Domain/1.0.0": {
+      "type": "project",
+      "path": "../TodoApi.Domain/TodoApi.Domain.csproj",
+      "msbuildProject": "../TodoApi.Domain/TodoApi.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8613,7 +8647,8 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.6",
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.6",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.6",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.3"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.3",
+      "TodoApi.Data >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8642,7 +8677,11 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi.Data\\TodoApi.Data.csproj": {
+              "projectPath": "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi.Data\\TodoApi.Data.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
