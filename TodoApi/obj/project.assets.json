@@ -2696,6 +2696,7 @@
         "framework": ".NETStandard,Version=v2.1",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "3.1.6",
+          "Microsoft.EntityFrameworkCore.Relational": "3.1.6",
           "TodoApi.Domain": "1.0.0"
         },
         "compile": {
