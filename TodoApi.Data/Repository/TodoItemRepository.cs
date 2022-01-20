@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApi.Data.Context;
@@ -27,7 +28,7 @@ namespace TodoApi.Data.Repository
 
         public async Task<TodoItem> GetById(Guid id)
         {
-            return await DBSet.FindAsync(id);
+            return await DBSet.AsNoTracking().FirstOrDefaultAsync(ti => ti.Id == id);
         }
 
         public async Task Insert(TodoItem todoItemEntity)
@@ -38,7 +39,7 @@ namespace TodoApi.Data.Repository
 
         public async Task Delete(Guid id)
         {
-            DBSet.Remove(new TodoItem { Id = id});
+            DBSet.Remove(new TodoItem { Id = id });
             await SaveChanges();
         }
 

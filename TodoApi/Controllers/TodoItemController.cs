@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Data.Context;
+using TodoApi.Domain.Interfaces;
 using TodoApi.Domain.Models;
+using TodoApi.Domain.Repository;
 
 namespace TodoApi.Controllers
 {
@@ -14,23 +14,25 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoItemController : ControllerBase
     {
-        private readonly TodoItemContext _context;
+        private readonly ITodoItemRepository _todoItemRepository;
+        private readonly ITodoItemService _todoItemService;
 
-        public TodoItemController(TodoItemContext context)
+        public TodoItemController(ITodoItemRepository todoItemRepository, ITodoItemService todoItemService)
         {
-            _context = context;
+            _todoItemRepository = todoItemRepository;
+            _todoItemService = todoItemService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _todoItemRepository.GetAll();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(Guid id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _todoItemRepository.GetById(id);
 
             if (todoItem == null)
             {
@@ -38,6 +40,14 @@ namespace TodoApi.Controllers
             }
 
             return todoItem;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        {
+            await _todoItemService.Insert(todoItem);
+
+            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
         }
 
         [HttpPut("{id}")]
@@ -48,15 +58,13 @@ namespace TodoApi.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(todoItem).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _todoItemService.Update(todoItem);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TodoItemExists(id))
+                if (!(await TodoItemExists(id)))
                 {
                     return NotFound();
                 }
@@ -69,33 +77,28 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
-        {
-            _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-        }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(Guid id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _todoItemRepository.GetById(id);
+            
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
+            await _todoItemService.Delete(id);
 
             return todoItem;
         }
 
-        private bool TodoItemExists(Guid id)
+        private async Task<bool> TodoItemExists(Guid id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            var todoItem = await _todoItemRepository.GetById(id);
+
+            if (todoItem == null) return false;
+
+            return true;
         }
     }
 }

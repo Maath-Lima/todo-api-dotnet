@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using TodoApi.Data.Context;
 using TodoApi.Domain.Repository;
 using TodoApi.Data.Repository;
+using TodoApi.Domain.Services;
+using TodoApi.Domain.Interfaces;
 
 namespace TodoApi
 {
@@ -25,10 +27,12 @@ namespace TodoApi
             services.AddDbContext<TodoItemContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                opt.EnableSensitiveDataLogging();
             });
 
             services.AddScoped<TodoItemContext>();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            services.AddScoped<ITodoItemService, TodoItemService>();
 
             services.AddControllers();
 

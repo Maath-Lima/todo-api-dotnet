@@ -6,7 +6,7 @@ using TodoApi.Domain.Models;
 
 namespace TodoApi.Domain.Interfaces
 {
-    internal interface ITodoItemService
+    public interface ITodoItemService
     {
         Task Insert(TodoItem todoItem);
         Task Update(TodoItem todoItem);
