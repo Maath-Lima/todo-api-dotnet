@@ -25,7 +25,7 @@ namespace TodoApi.Domain.Services
             await _todoItemRepository.Update(todoItem);
         }
         
-        public async Task Delete(Guid id)
+        public async Task Delete(int id)
         {
             await _todoItemRepository.Delete(id);
         }

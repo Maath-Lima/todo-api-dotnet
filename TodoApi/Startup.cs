@@ -24,15 +24,17 @@ namespace TodoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoItemContext>(opt =>
+            services.AddDbContext<TodoContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 opt.EnableSensitiveDataLogging();
             });
 
-            services.AddScoped<TodoItemContext>();
+            services.AddScoped<TodoContext>();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+            services.AddScoped<ITodoCategoryRepository, TodoCategoryRepository>();
             services.AddScoped<ITodoItemService, TodoItemService>();
+            services.AddScoped<ITodoCategoryService, TodoCategoryService>();
 
             services.AddControllers();
 

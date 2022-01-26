@@ -5,15 +5,8 @@ using System.Threading.Tasks;
 
 namespace TodoApi.Domain.Models
 {
-    public class TodoItem
+    public class TodoItem : Entity
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
         public bool IsComplete { get; set; } = false;
-
-        public TodoItem()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }

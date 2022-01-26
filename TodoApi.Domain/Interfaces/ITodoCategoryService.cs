@@ -6,10 +6,10 @@ using TodoApi.Domain.Models;
 
 namespace TodoApi.Domain.Interfaces
 {
-    public interface ITodoItemService
+    public interface ITodoCategoryService
     {
-        Task Insert(TodoItem todoItem);
-        Task Update(TodoItem todoItem);
+        Task Insert(TodoCategory todoCategory);
+        Task Update(TodoCategory todoCategory);
         Task Delete(int id);
     }
 }

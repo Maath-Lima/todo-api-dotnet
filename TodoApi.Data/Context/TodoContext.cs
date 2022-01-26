@@ -7,13 +7,14 @@ using TodoApi.Domain.Models;
 
 namespace TodoApi.Data.Context
 {
-    public class TodoItemContext : DbContext
+    public class TodoContext : DbContext
     {
-        public TodoItemContext(DbContextOptions<TodoItemContext> options)
+        public TodoContext(DbContextOptions<TodoContext> options)
             : base(options)
         {
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<TodoItem> TodoItem { get; set; }
+        public DbSet<TodoCategory> TodoCategory { get; set; }
     }
 }

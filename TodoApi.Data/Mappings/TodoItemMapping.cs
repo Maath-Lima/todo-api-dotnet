@@ -20,7 +20,6 @@ namespace TodoApi.Data.Mappings
                 .HasColumnType("bit");
 
             builder.ToTable("TodoItem");
-
         }
     }
 }

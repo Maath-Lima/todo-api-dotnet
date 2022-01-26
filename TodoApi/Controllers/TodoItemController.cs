@@ -30,7 +30,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(Guid id)
+        public async Task<ActionResult<TodoItem>> GetTodoItem(int id)
         {
             var todoItem = await _todoItemRepository.GetById(id);
 
@@ -51,7 +51,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(Guid id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(int id, TodoItem todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -78,7 +78,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(Guid id)
+        public async Task<ActionResult<TodoItem>> DeleteTodoItem(int id)
         {
             var todoItem = await _todoItemRepository.GetById(id);
             
@@ -92,7 +92,7 @@ namespace TodoApi.Controllers
             return todoItem;
         }
 
-        private async Task<bool> TodoItemExists(Guid id)
+        private async Task<bool> TodoItemExists(int id)
         {
             var todoItem = await _todoItemRepository.GetById(id);
 
