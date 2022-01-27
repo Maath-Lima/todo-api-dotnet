@@ -7,5 +7,6 @@ namespace TodoApi.Domain.Repository
 {
     public interface ITodoCategoryRepository : IRepository<TodoCategory>
     {
+        Task<TodoCategory> GetTodoItemByTodoCategory(int id);
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoApi.Data.Context;
 
 namespace TodoApi.Data.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    partial class TodoContextModelSnapshot : ModelSnapshot
+    [Migration("20220126232632_AddTodoItemForeignKeyToTodoCategory")]
+    partial class AddTodoItemForeignKeyToTodoCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +64,7 @@ namespace TodoApi.Data.Migrations
             modelBuilder.Entity("TodoApi.Domain.Models.TodoItem", b =>
                 {
                     b.HasOne("TodoApi.Domain.Models.TodoCategory", "TodoCategory")
-                        .WithMany("TodoItems")
+                        .WithMany()
                         .HasForeignKey("TodoCategoryId");
                 });
 #pragma warning restore 612, 618

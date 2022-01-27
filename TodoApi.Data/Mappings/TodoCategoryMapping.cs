@@ -15,6 +15,11 @@ namespace TodoApi.Data.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(200)");
 
+            builder
+                .HasMany(tc => tc.TodoItems)
+                .WithOne(ti => ti.TodoCategory)
+                .HasForeignKey(ti => ti.TodoCategoryId);
+
             builder.ToTable("TodoCategory");
         }
     }

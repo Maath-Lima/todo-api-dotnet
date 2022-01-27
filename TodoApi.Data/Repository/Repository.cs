@@ -9,12 +9,12 @@ namespace TodoApi.Data.Repository
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
     {
-        protected readonly TodoContext DB;
+        protected readonly TodoContext Db;
         protected readonly DbSet<TEntity> DBSet;
 
         public Repository(TodoContext Db)
         {
-            DB = Db;
+            this.Db = Db;
             DBSet = Db.Set<TEntity>();
         }
         public async Task<TEntity> GetById(int id)
@@ -47,12 +47,12 @@ namespace TodoApi.Data.Repository
 
         public async Task<int> SaveChanges()
         {
-            return await DB.SaveChangesAsync();
+            return await Db.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            DB?.Dispose();
+            Db?.Dispose();
         }
     }
 }
