@@ -12,7 +12,7 @@ using TodoApi.Domain.Repository;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/todoCategories")]
     [ApiController]
     public class TodoCategoryController : ControllerBase
     {
