@@ -10,7 +10,7 @@ using TodoApi.Domain.Repository;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] //hotfix
     [ApiController]
     public class TodoItemController : ControllerBase
     {
