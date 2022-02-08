@@ -54,7 +54,7 @@ namespace TodoApi.Controllers
                 new
                 {
                     success = true,
-                    error = todoItem
+                    data = todoItem
                 });
             }
             catch (Exception e)
@@ -73,22 +73,35 @@ namespace TodoApi.Controllers
         {
             if (id != todoItem.Id)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Os ids informados não são iguais!"
+                });
             }
 
             try
             {
+                var todoItemToUpdate = await _todoItemRepository.GetById(id);
+
+                todoItemToUpdate.Name = todoItem.Name;
+                todoItemToUpdate.IsComplete = todoItem.IsComplete;
+                todoItemToUpdate.TodoCategoryId = todoItem.TodoCategoryId;
+
                 await _todoItemService.Update(todoItem);
+
+                return Ok(
+                new
+                {
+                    success = true,
+                    data = todoItem
+                });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!(await TodoItemExists(id)))
                 {
                     return NotFound();
-                }
-                else
-                {
-                    throw;
                 }
             }
 
