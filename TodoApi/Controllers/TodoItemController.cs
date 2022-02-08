@@ -39,15 +39,33 @@ namespace TodoApi.Controllers
                 return NotFound();
             }
 
-            return todoItem;
+            return Ok(todoItem);
         }
 
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
-            await _todoItemService.Insert(todoItem);
+            try
+            {
+                await _todoItemService.Insert(todoItem);
 
-            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+                return Created(
+                new Uri($"{Request.Path}/{todoItem.Id}", UriKind.Relative),
+                new
+                {
+                    success = true,
+                    error = todoItem
+                });
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(new
+                {
+                    success = false,
+                    error = e.Message
+                });
+            }
         }
 
         [HttpPut("{id}")]
@@ -81,7 +99,7 @@ namespace TodoApi.Controllers
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(int id)
         {
             var todoItem = await _todoItemRepository.GetById(id);
-            
+
             if (todoItem == null)
             {
                 return NotFound();
