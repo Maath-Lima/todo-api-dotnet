@@ -49,13 +49,7 @@ namespace TodoApi.Controllers
             {
                 await _todoItemService.Insert(todoItem);
 
-                return Created(
-                new Uri($"{Request.Path}/{todoItem.Id}", UriKind.Relative),
-                new
-                {
-                    success = true,
-                    data = todoItem
-                });
+                return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
             }
             catch (Exception e)
             {
@@ -120,7 +114,7 @@ namespace TodoApi.Controllers
 
             await _todoItemService.Delete(id);
 
-            return todoItem;
+            return NoContent();
         }
 
         private async Task<bool> TodoItemExists(int id)

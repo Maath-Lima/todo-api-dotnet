@@ -44,10 +44,30 @@ namespace TodoApi.Controllers
             return todoCategory;
         }
 
-        [HttpGet("obter-itens/{id}")]
+        [HttpGet("{id}/items")]
         public async Task<ActionResult<TodoCategory>> GetTodoCategoryAndItems(int id)
         {
             return await _todoCategoryRepository.GetTodoItemByTodoCategory(id);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<TodoCategory>> PostTodoCategory(TodoCategory todoCategory)
+        {
+            try
+            {
+                await _todoCategoryService.Insert(todoCategory);
+
+                return CreatedAtAction(nameof(GetTodoCategory), new { id = todoCategory.Id }, todoCategory);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(new
+                {
+                    success = false,
+                    error = e.Message
+                });
+            }
         }
 
         [HttpPut("{id}")]
@@ -55,12 +75,27 @@ namespace TodoApi.Controllers
         {
             if (id != todoCategory.Id)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Os ids informados não são iguais!"
+                });
             }
 
             try
             {
+                var todoCategoryToUpdate = await _todoCategoryRepository.GetById(id);
+
+                todoCategoryToUpdate.Name = todoCategory.Name;
+
                 await _todoCategoryService.Update(todoCategory);
+
+                return Ok(
+                new
+                {
+                    success = true,
+                    data = todoCategory
+                });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -68,21 +103,9 @@ namespace TodoApi.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
             }
 
             return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<TodoCategory>> PostTodoCategory(TodoCategory todoCategory)
-        {
-            await _todoCategoryService.Insert(todoCategory);
-
-            return CreatedAtAction("GetTodoCategory", new { id = todoCategory.Id }, todoCategory);
         }
 
         [HttpDelete("{id}")]
@@ -97,7 +120,7 @@ namespace TodoApi.Controllers
 
             await _todoCategoryService.Delete(id);
 
-            return todoCategory;
+            return NoContent();
         }
         
         private async Task<bool> TodoCategoryExists(int id)
