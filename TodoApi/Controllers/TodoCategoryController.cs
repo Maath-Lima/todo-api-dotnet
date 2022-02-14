@@ -47,7 +47,7 @@ namespace TodoApi.Controllers
         [HttpGet("{id}/items")]
         public async Task<ActionResult<TodoCategory>> GetTodoCategoryAndItems(int id)
         {
-            return await _todoCategoryRepository.GetTodoItemByTodoCategory(id);
+            return await _todoCategoryRepository.GetTodoCategoryTodoItems(id);
         }
 
         [HttpPost]

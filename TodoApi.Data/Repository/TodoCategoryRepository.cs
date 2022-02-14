@@ -19,21 +19,12 @@ namespace TodoApi.Data.Repository
         {
         }
 
-        public async Task<TodoCategory> GetTodoItemByTodoCategory(int id)
+        public async Task<TodoCategory> GetTodoCategoryTodoItems(int id)
         {
             return await Db.TodoCategory
                                         .AsNoTracking()
-                                        .Where(tc => tc.Id == id)
-                                        .Select(tc => new TodoCategory
-                                        {
-                                            Id = tc.Id,
-                                            Name = tc.Name,
-                                            TodoItems = tc
-                                                .TodoItems
-                                                .Select(ti => new TodoItem { Id = ti.Id, Name = ti.Name, IsComplete = ti.IsComplete })
-                                                .ToList()
-                                        })
-                                        .FirstOrDefaultAsync();
+                                        .Include(tc => tc.TodoItems)
+                                        .FirstOrDefaultAsync(tc => tc.Id == id);
         }
     }
 }

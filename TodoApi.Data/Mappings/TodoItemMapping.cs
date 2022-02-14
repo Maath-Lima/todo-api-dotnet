@@ -10,6 +10,7 @@ namespace TodoApi.Data.Mappings
         {
             builder.HasKey(ti => ti.Id);
 
+            
             builder.Property(ti => ti.Name)
                 .IsRequired()
                 .HasColumnType("varchar(200)");
@@ -19,6 +20,8 @@ namespace TodoApi.Data.Mappings
                 .HasColumnName("IsComplete")
                 .HasColumnType("bit");
 
+            builder.Ignore(ti => ti.TodoCategory);
+            
             builder.ToTable("TodoItem");
         }
     }
