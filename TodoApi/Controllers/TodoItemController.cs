@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Domain.Interfaces;
 using TodoApi.Domain.Models;
 using TodoApi.Domain.Repository;
+using TodoApi.DTOModels;
 
 namespace TodoApi.Controllers
 {
@@ -14,11 +16,13 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoItemController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ITodoItemRepository _todoItemRepository;
         private readonly ITodoItemService _todoItemService;
 
-        public TodoItemController(ITodoItemRepository todoItemRepository, ITodoItemService todoItemService)
+        public TodoItemController(IMapper mapper, ITodoItemRepository todoItemRepository, ITodoItemService todoItemService)
         {
+            _mapper = mapper;
             _todoItemRepository = todoItemRepository;
             _todoItemService = todoItemService;
         }
@@ -30,26 +34,26 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(int id)
+        public async Task<ActionResult<TodoItemDTO>> GetTodoItem(int id)
         {
-            var todoItem = await _todoItemRepository.GetById(id);
+            var todoItemDTO = _mapper.Map<TodoItemDTO>(await _todoItemRepository.GetById(id));
 
-            if (todoItem == null)
+            if (todoItemDTO == null)
             {
                 return NotFound();
             }
 
-            return Ok(todoItem);
+            return Ok(todoItemDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoItemDTO)
         {
             try
             {
-                await _todoItemService.Insert(todoItem);
+                await _todoItemService.Insert(_mapper.Map<TodoItem>(todoItemDTO));
 
-                return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+                return CreatedAtAction(nameof(GetTodoItem), new { id = todoItemDTO.Id }, todoItemDTO);
             }
             catch (Exception e)
             {

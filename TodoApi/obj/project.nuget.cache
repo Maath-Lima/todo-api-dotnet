@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "PPmehiX7ENavklE7UGjMbH677TqVHuSfKQWLHh2QJOLS2+orLu87v9q6nXTOKXJaPgo/X8F7i4K8TxXSYb1DZw==",
+  "dgSpecHash": "o1l0LWNteqt1RRzD+WoaAzrFGzfCxOLOBZOytKGwR3VIhbCVoJSvCD/b9uyIUMM7iaco/sqUnAtHo8gG75pXXA==",
   "success": true,
   "projectFilePath": "C:\\Users\\math3\\Desktop\\lab\\dotnet-lab\\todo-api\\TodoApi\\TodoApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\math3\\.nuget\\packages\\automapper\\8.1.1\\automapper.8.1.1.nupkg.sha512",
+    "C:\\Users\\math3\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\6.1.1\\automapper.extensions.microsoft.dependencyinjection.6.1.1.nupkg.sha512",
     "C:\\Users\\math3\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\math3\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\math3\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\3.1.0\\microsoft.aspnetcore.razor.language.3.1.0.nupkg.sha512",

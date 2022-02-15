@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,8 @@ namespace TodoApi
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 opt.EnableSensitiveDataLogging();
             });
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<TodoContext>();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();

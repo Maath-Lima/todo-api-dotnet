@@ -289,3 +289,5 @@ C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\bin\Debug\netcoreapp3.1\S
 C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\obj\Debug\netcoreapp3.1\TodoApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\math3\Desktop\lab\dotnet-lab\todo-api\TodoApi\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
