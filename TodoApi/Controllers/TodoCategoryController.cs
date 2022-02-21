@@ -19,10 +19,11 @@ namespace TodoApi.Controllers
         private readonly ITodoCategoryRepository _todoCategoryRepository;
         private readonly ITodoCategoryService _todoCategoryService;
 
-        public TodoCategoryController(ITodoCategoryRepository todoCategoryRepository, ITodoCategoryService todoCategoryService)
+        public TodoCategoryController(IMapper mapper,ITodoCategoryRepository todoCategoryRepository, ITodoCategoryService todoCategoryService)
         {
             _todoCategoryRepository = todoCategoryRepository;
             _todoCategoryService = todoCategoryService;
+            _mapper = mapper;
         }
 
         [HttpGet]

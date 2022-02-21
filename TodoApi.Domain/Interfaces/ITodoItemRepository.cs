@@ -9,5 +9,7 @@ namespace TodoApi.Domain.Repository
 {
     public interface ITodoItemRepository : IRepository<TodoItem>
     {
+        Task<IEnumerable<TodoItem>> GetTodoItemsByCategory(int id);
+        Task DeleteAll(IEnumerable<TodoItem> todoItemsToDelete);
     }
 }

@@ -9,10 +9,12 @@ namespace TodoApi.Domain.Services
     public class TodoCategoryService : ITodoCategoryService
     {
         private readonly ITodoCategoryRepository _todoCategoryRepository;
+        private readonly ITodoItemRepository _todoItemRepository;
 
-        public TodoCategoryService(ITodoCategoryRepository todoCategoryRepository)
+        public TodoCategoryService(ITodoCategoryRepository todoCategoryRepository, ITodoItemRepository todoItemRepository)
         {
             _todoCategoryRepository = todoCategoryRepository;
+            _todoItemRepository = todoItemRepository;
         }
 
         public async Task Insert(TodoCategory todoItem)
@@ -27,7 +29,12 @@ namespace TodoApi.Domain.Services
 
         public async Task Delete(int id)
         {
-            
+            var todoItemsToDelete = _todoItemRepository.GetTodoItemsByCategory(id);
+
+            if (todoItemsToDelete != null)
+            {
+                await _todoItemRepository.DeleteAll(todoItemsToDelete.Result);
+            }
 
             await _todoCategoryRepository.Delete(id);
         }
