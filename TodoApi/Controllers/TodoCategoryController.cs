@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Data.Context;
 using TodoApi.Domain.Interfaces;
 using TodoApi.Domain.Models;
 using TodoApi.Domain.Repository;
+using TodoApi.DTOModels;
 
 namespace TodoApi.Controllers
 {
@@ -16,6 +15,7 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoCategoryController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ITodoCategoryRepository _todoCategoryRepository;
         private readonly ITodoCategoryService _todoCategoryService;
 
@@ -26,38 +26,32 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoCategory>>> GetTodoCategory()
+        public async Task<ActionResult<IEnumerable<TodoCategoryDTO>>> GetTodoCategory()
         {
-            return await _todoCategoryRepository.GetAll();
+            return _mapper.Map<List<TodoCategoryDTO>>(await _todoCategoryRepository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoCategory>> GetTodoCategory(int id)
+        public async Task<ActionResult<TodoCategoryDTO>> GetTodoCategory(int id)
         {
-            var todoCategory = await _todoCategoryRepository.GetById(id);
+            var todoCategoryDTO = await GetTodoCategoryDTO(id);
 
-            if (todoCategory == null)
+            if (todoCategoryDTO == null)
             {
                 return NotFound();
             }
 
-            return todoCategory;
-        }
-
-        [HttpGet("{id}/items")]
-        public async Task<ActionResult<TodoCategory>> GetTodoCategoryAndItems(int id)
-        {
-            return await _todoCategoryRepository.GetTodoCategoryTodoItems(id);
+            return todoCategoryDTO;
         }
 
         [HttpPost]
-        public async Task<ActionResult<TodoCategory>> PostTodoCategory(TodoCategory todoCategory)
+        public async Task<ActionResult<TodoCategoryDTO>> PostTodoCategory(TodoCategoryDTO todoCategoryDTO)
         {
             try
             {
-                await _todoCategoryService.Insert(todoCategory);
+                await _todoCategoryService.Insert(_mapper.Map<TodoCategory>(todoCategoryDTO));
 
-                return CreatedAtAction(nameof(GetTodoCategory), new { id = todoCategory.Id }, todoCategory);
+                return CreatedAtAction(nameof(GetTodoCategory), new { id = todoCategoryDTO.Id }, todoCategoryDTO);
             }
             catch (Exception e)
             {
@@ -71,9 +65,9 @@ namespace TodoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoCategory(int id, TodoCategory todoCategory)
+        public async Task<IActionResult> PutTodoCategory(int id, TodoCategoryDTO todoCategoryDTO)
         {
-            if (id != todoCategory.Id)
+            if (id != todoCategoryDTO.Id)
             {
                 return BadRequest(new
                 {
@@ -84,17 +78,17 @@ namespace TodoApi.Controllers
 
             try
             {
-                var todoCategoryToUpdate = await _todoCategoryRepository.GetById(id);
+                var todoCategoryToUpdate = await GetTodoCategoryDTO(id);
 
-                todoCategoryToUpdate.Name = todoCategory.Name;
+                todoCategoryToUpdate.Name = todoCategoryDTO.Name;
 
-                await _todoCategoryService.Update(todoCategory);
+                await _todoCategoryService.Update(_mapper.Map<TodoCategory>(todoCategoryToUpdate));
 
                 return Ok(
                 new
                 {
                     success = true,
-                    data = todoCategory
+                    data = todoCategoryDTO
                 });
             }
             catch (DbUpdateConcurrencyException)
@@ -109,9 +103,9 @@ namespace TodoApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoCategory>> DeleteTodoCategory(int id)
+        public async Task<IActionResult> DeleteTodoCategory(int id)
         {
-            var todoCategory = await _todoCategoryRepository.GetById(id);
+            var todoCategory = await GetTodoCategoryDTO(id);
 
             if (todoCategory == null)
             {
@@ -123,13 +117,11 @@ namespace TodoApi.Controllers
             return NoContent();
         }
         
-        private async Task<bool> TodoCategoryExists(int id)
+        private async Task<bool> TodoCategoryExists(int id) => await GetTodoCategoryDTO(id) == null ? false : true;
+
+        private async Task<TodoCategoryDTO> GetTodoCategoryDTO(int id)
         {
-            var todoCategory = await _todoCategoryRepository.GetById(id);
-
-            if (todoCategory == null) return false;
-
-            return true;
+            return _mapper.Map<TodoCategoryDTO>(await _todoCategoryRepository.GetById(id));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -28,22 +27,22 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
-            return await _todoItemRepository.GetAll();
+            return _mapper.Map<List<TodoItemDTO>>(await _todoItemRepository.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(int id)
         {
-            var todoItemDTO = _mapper.Map<TodoItemDTO>(await _todoItemRepository.GetById(id));
+            var todoItemDTO = await GetTodoItemDTO(id);
 
             if (todoItemDTO == null)
             {
                 return NotFound();
             }
 
-            return Ok(todoItemDTO);
+            return todoItemDTO;
         }
 
         [HttpPost]
@@ -57,7 +56,6 @@ namespace TodoApi.Controllers
             }
             catch (Exception e)
             {
-
                 return BadRequest(new
                 {
                     success = false,
@@ -67,9 +65,9 @@ namespace TodoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(int id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(int id, TodoItemDTO todoItemDTO)
         {
-            if (id != todoItem.Id)
+            if (id != todoItemDTO.Id)
             {
                 return BadRequest(new
                 {
@@ -80,19 +78,19 @@ namespace TodoApi.Controllers
 
             try
             {
-                var todoItemToUpdate = await _todoItemRepository.GetById(id);
+                var todoItemToUpdate = await GetTodoItemDTO(id);
 
-                todoItemToUpdate.Name = todoItem.Name;
-                todoItemToUpdate.IsComplete = todoItem.IsComplete;
-                todoItemToUpdate.TodoCategoryId = todoItem.TodoCategoryId;
+                todoItemToUpdate.Name = todoItemDTO.Name;
+                todoItemToUpdate.IsComplete = todoItemDTO.IsComplete;
+                todoItemToUpdate.TodoCategoryId = todoItemDTO.TodoCategoryId;
 
-                await _todoItemService.Update(todoItem);
+                await _todoItemService.Update(_mapper.Map<TodoItem>(todoItemToUpdate));
 
                 return Ok(
                 new
                 {
                     success = true,
-                    data = todoItem
+                    data = todoItemDTO
                 });
             }
             catch (DbUpdateConcurrencyException)
@@ -107,9 +105,9 @@ namespace TodoApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(int id)
+        public async Task<IActionResult> DeleteTodoItem(int id)
         {
-            var todoItem = await _todoItemRepository.GetById(id);
+            var todoItem = await GetTodoItemDTO(id);
 
             if (todoItem == null)
             {
@@ -121,13 +119,11 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        private async Task<bool> TodoItemExists(int id)
+        private async Task<bool> TodoItemExists(int id) => await GetTodoItemDTO(id) == null ? false : true;
+
+        private async Task<TodoItemDTO> GetTodoItemDTO(int id)
         {
-            var todoItem = await _todoItemRepository.GetById(id);
-
-            if (todoItem == null) return false;
-
-            return true;
+            return _mapper.Map<TodoItemDTO>(await _todoItemRepository.GetById(id));
         }
     }
 }
