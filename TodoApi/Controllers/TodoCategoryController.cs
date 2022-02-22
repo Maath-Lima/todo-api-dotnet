@@ -11,15 +11,15 @@ using TodoApi.DTOModels;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/todoCategories")]
     [ApiController]
+    [Route("api/todoCategories")]
     public class TodoCategoryController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ITodoCategoryRepository _todoCategoryRepository;
         private readonly ITodoCategoryService _todoCategoryService;
 
-        public TodoCategoryController(IMapper mapper,ITodoCategoryRepository todoCategoryRepository, ITodoCategoryService todoCategoryService)
+        public TodoCategoryController(IMapper mapper, ITodoCategoryRepository todoCategoryRepository, ITodoCategoryService todoCategoryService)
         {
             _todoCategoryRepository = todoCategoryRepository;
             _todoCategoryService = todoCategoryService;
@@ -36,6 +36,19 @@ namespace TodoApi.Controllers
         public async Task<ActionResult<TodoCategoryDTO>> GetTodoCategory(int id)
         {
             var todoCategoryDTO = await GetTodoCategoryDTO(id);
+
+            if (todoCategoryDTO == null)
+            {
+                return NotFound();
+            }
+
+            return todoCategoryDTO;
+        }
+
+        [HttpGet("{id}/todoItems")]
+        public async Task<ActionResult<TodoCategoryDTO>> GetTodoCategoryWithRelatedTodoItems(int id)
+        {
+            var todoCategoryDTO = _mapper.Map<TodoCategoryDTO>(await _todoCategoryRepository.GetTodoCategoryIncludeTodoItems(id));
 
             if (todoCategoryDTO == null)
             {
@@ -117,7 +130,7 @@ namespace TodoApi.Controllers
 
             return NoContent();
         }
-        
+
         private async Task<bool> TodoCategoryExists(int id) => await GetTodoCategoryDTO(id) == null ? false : true;
 
         private async Task<TodoCategoryDTO> GetTodoCategoryDTO(int id)

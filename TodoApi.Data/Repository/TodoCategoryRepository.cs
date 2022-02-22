@@ -19,12 +19,12 @@ namespace TodoApi.Data.Repository
         {
         }
 
-        public async Task<TodoCategory> GetTodoCategoryTodoItems(int id)
+        public async Task<TodoCategory> GetTodoCategoryIncludeTodoItems(int id)
         {
-            return await Db.TodoCategory
-                                        .AsNoTracking()
-                                        .Include(tc => tc.TodoItems)
-                                        .FirstOrDefaultAsync(tc => tc.Id == id);
+            return await DBSet
+                              .AsNoTracking()
+                              .Include(ti => ti.TodoItems)
+                              .FirstOrDefaultAsync(tc => tc.Id == id);
         }
     }
 }
