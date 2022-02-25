@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TodoApi.DTOModels
 {
-    public class TodoCategoryDTO
+    public class TodoCategoryDTO : BaseDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
         public IEnumerable<TodoItemDTO> TodoItems { get; set; }
     }
 }

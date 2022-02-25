@@ -2,7 +2,7 @@
 {
     public class TodoItem : Entity
     {
-        public bool IsComplete { get; set; } = false;
+        public bool IsComplete { get; set; }
 
         public int? TodoCategoryId { get; set; }
 

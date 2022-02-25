@@ -11,9 +11,8 @@ using TodoApi.DTOModels;
 
 namespace TodoApi.Controllers
 {
-    [ApiController]
     [Route("api/todoItems")]
-    public class TodoItemController : ControllerBase
+    public class TodoItemController : MainController
     {
         private readonly IMapper _mapper;
         private readonly ITodoItemRepository _todoItemRepository;
