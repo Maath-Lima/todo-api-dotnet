@@ -11,9 +11,8 @@ using TodoApi.DTOModels;
 
 namespace TodoApi.Controllers
 {
-    [ApiController]
     [Route("api/todoCategories")]
-    public class TodoCategoryController : ControllerBase
+    public class TodoCategoryController : MainController
     {
         private readonly IMapper _mapper;
         private readonly ITodoCategoryRepository _todoCategoryRepository;
@@ -63,6 +62,11 @@ namespace TodoApi.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return InvalidModelStateResponse(ModelState);
+                }
+
                 await _todoCategoryService.Insert(_mapper.Map<TodoCategory>(todoCategoryDTO));
 
                 return CreatedAtAction(nameof(GetTodoCategory), new { id = todoCategoryDTO.Id }, todoCategoryDTO);
@@ -92,6 +96,11 @@ namespace TodoApi.Controllers
 
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return InvalidModelStateResponse(ModelState);
+                }
+
                 var todoCategoryToUpdate = await GetTodoCategoryDTO(id);
 
                 todoCategoryToUpdate.Name = todoCategoryDTO.Name;

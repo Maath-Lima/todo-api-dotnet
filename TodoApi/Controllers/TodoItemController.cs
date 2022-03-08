@@ -49,6 +49,11 @@ namespace TodoApi.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return InvalidModelStateResponse(ModelState);
+                }
+
                 await _todoItemService.Insert(_mapper.Map<TodoItem>(todoItemDTO));
 
                 return CreatedAtAction(nameof(GetTodoItem), new { id = todoItemDTO.Id }, todoItemDTO);
@@ -77,6 +82,11 @@ namespace TodoApi.Controllers
 
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return InvalidModelStateResponse(ModelState);
+                }
+
                 var todoItemToUpdate = await GetTodoItemDTO(id);
 
                 todoItemToUpdate.Name = todoItemDTO.Name;

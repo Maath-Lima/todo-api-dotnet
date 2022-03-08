@@ -10,6 +10,7 @@ using TodoApi.Domain.Repository;
 using TodoApi.Data.Repository;
 using TodoApi.Domain.Services;
 using TodoApi.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TodoApi
 {
@@ -29,6 +30,11 @@ namespace TodoApi
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
                 opt.EnableSensitiveDataLogging();
+            });
+
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true;
             });
 
             services.AddAutoMapper(typeof(Startup));
