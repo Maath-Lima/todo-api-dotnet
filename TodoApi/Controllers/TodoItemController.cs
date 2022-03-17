@@ -31,14 +31,19 @@ namespace TodoApi.Controllers
             return _mapper.Map<List<TodoItemDTO>>(await _todoItemRepository.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(int id)
         {
             var todoItemDTO = await GetTodoItemDTO(id);
 
             if (todoItemDTO == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    code = 1,
+                    message = "To-do não encontrado",
+                    description = $"Não existe um to-do com o id informado: {id}"
+                });
             }
 
             return todoItemDTO;
@@ -51,7 +56,7 @@ namespace TodoApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return InvalidModelStateResponse(ModelState);
+                    return InvalidModelStateResponseError(ModelState);
                 }
 
                 await _todoItemService.Insert(_mapper.Map<TodoItem>(todoItemDTO));
@@ -68,7 +73,7 @@ namespace TodoApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> PutTodoItem(int id, TodoItemDTO todoItemDTO)
         {
             if (id != todoItemDTO.Id)
@@ -84,7 +89,7 @@ namespace TodoApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return InvalidModelStateResponse(ModelState);
+                    return InvalidModelStateResponseError(ModelState);
                 }
 
                 var todoItemToUpdate = await GetTodoItemDTO(id);
@@ -113,7 +118,7 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteTodoItem(int id)
         {
             var todoItem = await GetTodoItemDTO(id);
@@ -128,11 +133,16 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        private async Task<bool> TodoItemExists(int id) => await GetTodoItemDTO(id) == null ? false : true;
+        #region Utils
+        private async Task<bool> TodoItemExists(int id)
+        {
+            return await GetTodoItemDTO(id) != null;
+        }
 
         private async Task<TodoItemDTO> GetTodoItemDTO(int id)
         {
             return _mapper.Map<TodoItemDTO>(await _todoItemRepository.GetById(id));
         }
+        #endregion
     }
 }

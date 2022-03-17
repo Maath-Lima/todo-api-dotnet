@@ -7,7 +7,7 @@ namespace TodoApi.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        protected ActionResult InvalidModelStateResponse(ModelStateDictionary modelState)
+        protected ActionResult InvalidModelStateResponseError(ModelStateDictionary modelState)
         {
             return BadRequest(new {
                 success = false,

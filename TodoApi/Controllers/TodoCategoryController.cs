@@ -64,7 +64,7 @@ namespace TodoApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return InvalidModelStateResponse(ModelState);
+                    return InvalidModelStateResponseError(ModelState);
                 }
 
                 await _todoCategoryService.Insert(_mapper.Map<TodoCategory>(todoCategoryDTO));
@@ -98,7 +98,7 @@ namespace TodoApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return InvalidModelStateResponse(ModelState);
+                    return InvalidModelStateResponseError(ModelState);
                 }
 
                 var todoCategoryToUpdate = await GetTodoCategoryDTO(id);
