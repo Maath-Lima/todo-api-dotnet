@@ -6,11 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Data.Context;
-using TodoApi.Domain.Repository;
-using TodoApi.Data.Repository;
-using TodoApi.Domain.Services;
-using TodoApi.Domain.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using TodoApi.Configuration;
 
 namespace TodoApi
