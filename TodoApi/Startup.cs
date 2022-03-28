@@ -11,6 +11,7 @@ using TodoApi.Data.Repository;
 using TodoApi.Domain.Services;
 using TodoApi.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using TodoApi.Configuration;
 
 namespace TodoApi
 {
@@ -23,34 +24,24 @@ namespace TodoApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                opt.EnableSensitiveDataLogging();
             });
 
-            services.Configure<ApiBehaviorOptions>(opt =>
-            {
-                opt.SuppressModelStateInvalidFilter = true;
-            });
+            services.WebApiConfig();
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<TodoContext>();
-            services.AddScoped<ITodoItemRepository, TodoItemRepository>();
-            services.AddScoped<ITodoCategoryRepository, TodoCategoryRepository>();
-            services.AddScoped<ITodoItemService, TodoItemService>();
-            services.AddScoped<ITodoCategoryService, TodoCategoryService>();
+            services.ResolveDependencies();
 
             services.AddControllers();
 
             services.AddSwaggerGen();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -61,16 +52,9 @@ namespace TodoApi
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.RoutingConfiguration();
         }
     }
 }
