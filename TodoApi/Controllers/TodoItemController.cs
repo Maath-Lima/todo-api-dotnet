@@ -63,12 +63,22 @@ namespace TodoApi.Controllers
 
                 return CreatedAtAction(nameof(GetTodoItem), new { id = todoItemDTO.Id }, todoItemDTO);
             }
+            catch (DbUpdateException dbe)
+            {
+                return StatusCode(500, new
+                {
+                    code = 2,
+                    message = "Erro ao inserir To-do",
+                    description = dbe.Message
+                });
+            }
             catch (Exception e)
             {
-                return BadRequest(new
+                return StatusCode(500, new
                 {
-                    success = false,
-                    error = e.Message
+                    code = 3,
+                    message = "Erro geral da API",
+                    description = e.Message
                 });
             }
         }
@@ -100,22 +110,30 @@ namespace TodoApi.Controllers
 
                 await _todoItemService.Update(_mapper.Map<TodoItem>(todoItemToUpdate));
 
-                return Ok(
-                new
+                return Ok(new
                 {
                     success = true,
                     data = todoItemDTO
                 });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException dbe)
             {
-                if (!(await TodoItemExists(id)))
+                return BadRequest(new
                 {
-                    return NotFound();
-                }
+                    code = 2,
+                    message = "Erro ao atualizr To-do",
+                    description = dbe.Message
+                });
             }
-
-            return NoContent();
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    code = 3,
+                    message = "Erro geral da API",
+                    description = e.Message
+                });
+            }
         }
 
         [HttpDelete("{id:int}")]
@@ -125,12 +143,38 @@ namespace TodoApi.Controllers
 
             if (todoItem == null)
             {
-                return NotFound();
+                return NotFound(new
+                {
+                    code = 1,
+                    message = "To-do não encontrado",
+                    description = $"Não existe um to-do com o id informado: {id}"
+                });
             }
 
-            await _todoItemService.Delete(id);
+            try
+            {
+                await _todoItemService.Delete(id);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (DbUpdateException dbe)
+            {
+                return BadRequest(new
+                {
+                    code = 4,
+                    message = "Erro ao deletar To-do",
+                    description = dbe.Message
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    code = 3,
+                    message = "Erro geral da API",
+                    description = e.Message
+                });
+            }
         }
 
         #region Utils
